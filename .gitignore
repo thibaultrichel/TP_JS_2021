@@ -1,6 +1,7 @@
 # Project exclude paths
 /node_modules/
 .idea/*
+
 ### macOS template
 # General
 .DS_Store
@@ -246,3 +247,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+/images/

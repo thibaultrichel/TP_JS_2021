@@ -56,7 +56,7 @@ const ensureDir = (x) =>
 
 const sortImage = R.pipe(
     ensureDir,
-    R.tap(console.log)
+    R.andThen(R.tap(console.log))
 );
 
 const sortAll = R.pipe(
