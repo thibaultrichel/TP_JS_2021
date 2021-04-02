@@ -42,9 +42,14 @@ const getPredictions = async () => {
     return predictions;
 };
 
-const renameAndMoveFile = (pathToFile, newPath, name) => {
-    fs.move(pathToFile, newPath + name);
+const renameAndMoveFile = (pathToFile, newPath) => {
+    fs.move(pathToFile, newPath);
+    // continue ???
 };
+
+const getPathWithClass = R.pipe(
+    //????
+);
 
 const ensureDir = (x) =>
     R.pipe(
@@ -56,7 +61,8 @@ const ensureDir = (x) =>
 
 const sortImage = R.pipe(
     ensureDir,
-    R.andThen(R.tap(console.log))
+    R.andThen(R.prop('path')),
+    R.andThen(renameAndMoveFile())
 );
 
 const sortAll = R.pipe(
