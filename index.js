@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const jpeg = require('jpeg-js');
 const Bromise = require('bluebird');
 const R = require('ramda');
+const path = require('path');
 
 
 const detectImage = (model) =>
@@ -42,14 +43,6 @@ const getPredictions = async () => {
     return predictions;
 };
 
-const renameAndMoveFile = (pathToFile, newPath) => {
-    fs.move(pathToFile, newPath);
-    // continue ???
-};
-
-const getPathWithClass = R.pipe(
-    //????
-);
 
 const ensureDir = (x) =>
     R.pipe(
@@ -59,15 +52,31 @@ const ensureDir = (x) =>
         R.andThen(R.always(x))
     )(x);
 
+const getAbsolutePath = R.pipe(
+    R.prop('path'),
+    path.resolve
+);
+
+const getNewPath = (x) =>
+    R.pipe(
+        R.prop('path'),
+        R.split('/'),
+        R.insert(2, R.path(['image', 0, 'class'], x)),
+        R.join('/')
+    )(x);
+
+const renameAndMoveFile = R.pipe(
+    R.converge(fs.move, [getAbsolutePath, getNewPath])
+);
+
 const sortImage = R.pipe(
     ensureDir,
-    R.andThen(R.prop('path')),
-    R.andThen(renameAndMoveFile())
+    R.andThen(renameAndMoveFile)
 );
 
 const sortAll = R.pipe(
     getPredictions,
-    R.andThen(R.map(sortImage))
+    R.andThen(R.map(sortImage)),
 );
 
 sortAll();

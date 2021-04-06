@@ -34,6 +34,7 @@
   },
   "scripts": {
     "code-style": "xo",
-    "start": "clear && node index.js"
+    "start": "clear && node index.js",
+    "test": "clear && node testfile.js"
   }
 }
