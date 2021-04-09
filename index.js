@@ -65,18 +65,21 @@ const getNewPath = (x) =>
         R.join('/')
     )(x);
 
-const renameAndMoveFile = R.pipe(
+const moveFile = R.pipe(
     R.converge(fs.move, [getAbsolutePath, getNewPath])
 );
 
 const sortImage = R.pipe(
     ensureDir,
-    R.andThen(renameAndMoveFile)
+    R.andThen(moveFile)
 );
 
 const sortAll = R.pipe(
     getPredictions,
-    R.andThen(R.map(sortImage)),
+    R.andThen(R.map(sortImage))
 );
 
-sortAll();
+// sortAll();
+
+
+module.exports = {getPredictions};
