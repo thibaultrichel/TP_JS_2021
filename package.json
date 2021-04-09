@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "code-style": "xo",
+    "start": "clear && node index.js",
+    "test": "clear && node testfile.js"
+  },
   "dependencies": {
     "@tensorflow-models/coco-ssd": "^2.2.1",
     "@tensorflow/tfjs-node": "^3.3.0",
@@ -29,12 +34,6 @@
   "prettier": {
     "bracketSpacing": false,
     "singleQuote": true,
-    "trailingComma": "none",
-    "useTabs": true
-  },
-  "scripts": {
-    "code-style": "xo",
-    "start": "clear && node index.js",
-    "test": "clear && node testfile.js"
+    "trailingComma": "none"
   }
 }

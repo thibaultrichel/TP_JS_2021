@@ -5,35 +5,52 @@ const path = require('path');
 const {getPredictions} = require('./index.js');
 
 const getCompteur = R.pipe(
-    fs.readdir,
-    R.andThen(R.length),
-    R.andThen(R.toString),
-    R.andThen(R.tap(console.log)) // ?????
+  fs.readdir,
+  R.andThen(R.length),
+  R.andThen(R.toString),
+  R.andThen(R.tap(console.log)) // ?????
 );
 
-const getCompteur2 = () => {return '0'}
+const getCompteur2 = () => {
+  return '0';
+};
+
+const getExtension = R.pipe(
+  R.split('/'),
+  R.last,
+  R.split('.'),
+  R.nth(1),
+  R.concat('.')
+);
 
 const getImgNewName = R.pipe(
-    R.split('/'),
-    R.last,
-    R.split('.'),
-    R.converge(R.concat, [R.nth(0), getCompteur2])
+  R.split('/'),
+  R.last,
+  R.split('.'),
+  R.converge(R.concat, [R.nth(0), getCompteur2])
 );
 
-const renameImage = (img) =>
-    R.pipe(     // prends une image
-        R.prop('path'),
-        getImgNewName,
-        R.concat(R.prop('path', img))
-    )(img);
+const getPathWithoutName = R.pipe(
+  R.split('/'),
+  R.init,
+  R.join('/'),
+  R.flip(R.concat)('/')
+);
+
+const getNewImgWithExt = R.pipe(
+  R.converge(R.concat, [getImgNewName, getExtension])
+);
+
+const renameImage = R.pipe(
+  R.prop('path'),
+  R.converge(R.concat, [getPathWithoutName, getNewImgWithExt])
+);
 
 const renameTEST = R.pipe(
-    getPredictions,
-    R.andThen(R.nth(0)),
-    R.andThen(renameImage),
-    R.andThen(R.tap(console.log))
+  getPredictions,
+  R.andThen(R.nth(0)),
+  R.andThen(renameImage),
+  R.andThen(R.tap(console.log))
 );
-
-// giga teub
 
 renameTEST();
