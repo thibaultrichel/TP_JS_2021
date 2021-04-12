@@ -1,9 +1,7 @@
 const R = require('ramda');
 const fs = require('fs-extra');
 
-const {
-	getPredictions,
-} = require('./modelPredictions.js');
+const {getPredictions} = require('./modelPredictions.js');
 
 const getCompteur = R.pipe(
 	fs.readdir,
@@ -46,7 +44,7 @@ const renameImage = R.pipe(
 	R.prop('path'),
 	R.converge(R.concat, [
 		getPathWithoutName,
-		getNewImgWithExt,
+		getNewImgWithExt
 	])
 );
 
@@ -58,3 +56,16 @@ const renameTEST = R.pipe(
 );
 
 renameTEST();
+
+const returnTest = () => {
+	return './images/test.jpeg';
+};
+
+const test = R.pipe(
+	getPredictions,
+	R.andThen(R.nth(0)),
+	R.andThen(R.prop('path')),
+	R.andThen(fs.rename('./images/test.jpeg', R.identity))
+);
+
+test();

@@ -1,9 +1,12 @@
 const R = require('ramda');
 const fs = require('fs-extra');
 
-const getCompteur2 = () => {
-	return '0';
-};
+const getCompteur = R.pipe(
+	fs.readdir,
+	R.andThen(R.length),
+	R.andThen(R.toString),
+	R.andThen(R.tap(console.log))
+);
 
 const getExtension = R.pipe(
 	R.split('/'),
@@ -13,11 +16,10 @@ const getExtension = R.pipe(
 	R.concat('.')
 );
 
+const getClass = R.pipe(R.split('/'), R.nth(2));
+
 const getImgNewName = R.pipe(
-	R.split('/'),
-	R.last,
-	R.split('.'),
-	R.converge(R.concat, [R.nth(0), getCompteur2])
+	R.converge(R.concat, [getClass, getCompteur])
 );
 
 const getPathWithoutName = R.pipe(
@@ -31,9 +33,22 @@ const getNewImgWithExt = R.pipe(
 	R.converge(R.concat, [getImgNewName, getExtension])
 );
 
+const getRenamedPath = R.pipe(
+	R.prop('newPath'),
+	R.converge(R.concat, [
+		getPathWithoutName,
+		getNewImgWithExt
+	])
+);
+
+const setNewPath = (x) =>
+	R.pipe(
+		R.set(R.lensProp('newPath'), getRenamedPath(x)),
+		R.tap(console.log)
+	)(x);
+
 const renameImage = R.pipe(
-	R.prop('path'),
-	R.converge(R.concat, [getPathWithoutName, getNewImgWithExt])
+	R.converge(fs.rename, [R.prop('newPath'), getRenamedPath])
 );
 
 module.exports = {renameImage};

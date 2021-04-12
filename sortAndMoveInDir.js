@@ -34,21 +34,16 @@ const moveFile = async (img) => {
 	return R.assoc('newPath', newPath, img);
 };
 
-const setNewPathInObject = (im) =>
-	R.pipe(R.set(R.lensProp('path'), getNewPath(im)))(im);
+const sortImage = R.pipe(ensureDir, R.andThen(moveFile));
 
-const sortImage = (im) =>
-	R.pipe(
-		ensureDir,
-		R.andThen(moveFile),
-		R.andThen(setNewPathInObject),
-		R.andThen(R.always(im))
-	)(im);
+const sortAndRename = R.pipe(
+	sortImage,
+	R.andThen(renameImage)
+);
 
 const sortPredictionsInDirectories = R.pipe(
 	getPredictions,
-	R.andThen(sortImage),
-	R.andThen(R.tap(console.log))
+	R.andThen(R.map(sortAndRename))
 );
 
 module.exports = {sortPredictionsInDirectories};
