@@ -7,9 +7,7 @@ const R = require('ramda');
 
 const detectImage = (model) =>
 	R.pipe(
-		R.over(R.lensProp('image'), (x) =>
-			model.detect(x)
-		),
+		R.over(R.lensProp('image'), (x) => model.detect(x)),
 		Bromise.props
 	);
 
@@ -27,9 +25,9 @@ const getPredictions = async () => {
 	const imgList = await Bromise.map(
 		[
 			'./images/dog.jpeg',
-			'./images/panda.jpeg',
-			'./images/little-red-panda.jpeg',
 			'./images/cat.jpeg',
+			'./images/panda.jpeg',
+			'./images/little-red-panda.jpeg'
 		],
 		reader
 	);

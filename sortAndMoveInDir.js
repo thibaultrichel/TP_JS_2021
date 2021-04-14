@@ -37,6 +37,7 @@ const moveFile = async (img) => {
 const sortImage = R.pipe(ensureDir, R.andThen(moveFile));
 
 const sortAndRename = R.pipe(
+	R.tap(console.log),
 	sortImage,
 	R.andThen(renameImage)
 );

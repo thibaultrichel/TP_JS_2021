@@ -1,11 +1,21 @@
 const R = require('ramda');
 const fs = require('fs-extra');
 
+const isHiddenFile = R.pipe(R.nth(0), R.equals('.'), R.not);
+
+const getPathWithoutName = R.pipe(
+	R.split('/'),
+	R.init,
+	R.join('/'),
+	R.flip(R.concat)('/')
+);
+
 const getCompteur = R.pipe(
-	fs.readdir,
-	R.andThen(R.length),
-	R.andThen(R.toString),
-	R.andThen(R.tap(console.log))
+	getPathWithoutName,
+	fs.readdirSync,
+	R.filter(isHiddenFile),
+	R.length,
+	R.toString
 );
 
 const getExtension = R.pipe(
@@ -16,17 +26,10 @@ const getExtension = R.pipe(
 	R.concat('.')
 );
 
-const getClass = R.pipe(R.split('/'), R.nth(2));
+const getImgClass = R.pipe(R.split('/'), R.nth(2));
 
 const getImgNewName = R.pipe(
-	R.converge(R.concat, [getClass, getCompteur])
-);
-
-const getPathWithoutName = R.pipe(
-	R.split('/'),
-	R.init,
-	R.join('/'),
-	R.flip(R.concat)('/')
+	R.converge(R.concat, [getImgClass, getCompteur])
 );
 
 const getNewImgWithExt = R.pipe(
