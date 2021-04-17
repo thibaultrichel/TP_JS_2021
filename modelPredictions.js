@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const jpeg = require('jpeg-js');
 const Bromise = require('bluebird');
 const R = require('ramda');
+const {readDir} = require('./rename.js');
 
 const detectImage = (model) =>
 	R.pipe(
@@ -21,14 +22,9 @@ const reader = (path) =>
 		R.andThen(R.assoc('path', path))
 	)(path);
 
-const getPredictions = async () => {
+const getPredictions = async (pathToDir) => {
 	const imgList = await Bromise.map(
-		[
-			'./images/dog.jpeg',
-			'./images/cat.jpeg',
-			'./images/panda.jpeg',
-			'./images/little-red-panda.jpeg'
-		],
+		readDir(pathToDir),
 		reader
 	);
 

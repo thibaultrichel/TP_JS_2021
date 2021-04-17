@@ -3,6 +3,13 @@ const fs = require('fs-extra');
 
 const isHiddenFile = R.pipe(R.nth(0), R.equals('.'), R.not);
 
+const readDir = (path) =>
+	R.pipe(
+		fs.readdir,
+		R.andThen(R.filter(isHiddenFile)),
+		R.andThen(R.map(R.concat(path)))
+	)(path);
+
 const getPathWithoutName = R.pipe(
 	R.split('/'),
 	R.init,
@@ -54,4 +61,4 @@ const renameImage = R.pipe(
 	R.converge(fs.rename, [R.prop('newPath'), getRenamedPath])
 );
 
-module.exports = {renameImage};
+module.exports = {renameImage, readDir};

@@ -2,4 +2,4 @@ const {
 	sortPredictionsInDirectories
 } = require('./sortAndMoveInDir.js');
 
-sortPredictionsInDirectories();
+sortPredictionsInDirectories('./images/');
