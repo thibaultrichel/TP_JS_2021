@@ -48,7 +48,8 @@ const getRenamedPath = R.pipe(
 	R.converge(R.concat, [
 		getPathWithoutName,
 		getNewImgWithExt
-	])
+	]),
+	R.tap(console.log)
 );
 
 const setNewPath = (x) =>
@@ -61,4 +62,4 @@ const renameImage = R.pipe(
 	R.converge(fs.rename, [R.prop('newPath'), getRenamedPath])
 );
 
-module.exports = {renameImage, readDir};
+module.exports = {renameImage, readDir, getRenamedPath};

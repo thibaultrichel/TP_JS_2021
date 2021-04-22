@@ -3,7 +3,10 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const {getPredictions} = require('./modelPredictions.js');
-const {renameImage} = require('./rename.js');
+const {
+	renameImage,
+	getRenamedPath
+} = require('./rename.js');
 
 const ensureDir = (x) =>
 	R.pipe(

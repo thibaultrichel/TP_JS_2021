@@ -1,6 +1,7 @@
 const R = require('ramda');
 const fs = require('fs-extra');
 const path = require('path');
+const {getImgNewName} = require('./rename.js');
 
 const {getPredictions} = require('./modelPredictions.js');
 
@@ -25,7 +26,7 @@ const readDir = (path) => {
 
 const test = R.pipe(
 	getPredictions,
-	R.andThen(R.tap(console.log))
+	R.andThen(getImgNewName)
 );
 
 test();
