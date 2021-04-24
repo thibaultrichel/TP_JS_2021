@@ -13,6 +13,7 @@
     "@tensorflow/tfjs-node": "^3.3.0",
     "bluebird": "^3.7.2",
     "fs-extra": "^9.1.0",
+    "image-size": "^1.0.0",
     "jpeg-js": "^0.4.3",
     "ramda": "^0.27.1"
   },

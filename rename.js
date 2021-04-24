@@ -62,4 +62,4 @@ const renameImage = R.pipe(
 	R.converge(fs.rename, [R.prop('newPath'), getRenamedPath])
 );
 
-module.exports = {renameImage, readDir, getRenamedPath};
+module.exports = {renameImage, readDir};
