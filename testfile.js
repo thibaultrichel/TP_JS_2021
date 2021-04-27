@@ -1,31 +1,50 @@
 const R = require('ramda');
-const fs = require('fs-extra');
 const sizeOf = require('image-size');
-
 const {getPredictions} = require('./modelPredictions.js');
+const {readDir} = require('./rename.js');
 
-const getBbox = R.pipe(
-	R.path(['image', 0, 'bbox']),
-	R.tap(console.log)
-);
-
-const getDimensions = R.pipe(
+const getImgWidth = R.pipe(
 	R.prop('path'),
 	sizeOf,
 	R.dissoc('type'),
 	R.dissoc('orientation'),
-	R.tap(console.log)
+	R.prop('width')
 );
 
-const displayBbox = R.pipe(
+const getImgHeight = R.pipe(
+	R.prop('path'),
+	sizeOf,
+	R.dissoc('type'),
+	R.dissoc('orientation'),
+	R.prop('height')
+);
+
+const getImgSurface = R.pipe(
+	R.converge(R.multiply, [getImgWidth, getImgHeight])
+);
+
+const getBboxWidth = R.pipe(
+	R.path(['image', 0, 'bbox']),
+	R.nth(2)
+);
+
+const getBboxHeight = R.pipe(
+	R.path(['image', 0, 'bbox']),
+	R.nth(3)
+);
+
+const getBboxSurface = R.pipe(
+	R.converge(R.multiply, [getBboxWidth, getBboxHeight])
+);
+
+const getRatio = R.pipe(
+	R.converge(R.divide, [getBboxSurface, getImgSurface])
+);
+
+const TEST = R.pipe(
 	getPredictions,
-	R.andThen(R.map(getBbox))
+	R.andThen(R.map(getRatio)),
+	R.andThen(R.tap(console.log))
 );
 
-const displayDimensions = R.pipe(
-	getPredictions,
-	R.andThen(R.map(getDimensions))
-);
-
-displayBbox('./images/');
-displayDimensions('./images/');
+TEST('./images/');
