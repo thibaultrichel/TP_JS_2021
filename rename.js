@@ -35,9 +35,7 @@ const getExtension = R.pipe(
 
 const getImgClass = R.pipe(R.split('/'), R.nth(2));
 
-const getImgNewName = R.pipe(
-	R.converge(R.concat, [getImgClass, getCompteur])
-);
+const getImgNewName = R.pipe(R.converge(R.concat, [getImgClass, getCompteur]));
 
 const getNewImgWithExt = R.pipe(
 	R.converge(R.concat, [getImgNewName, getExtension])
@@ -45,18 +43,8 @@ const getNewImgWithExt = R.pipe(
 
 const getRenamedPath = R.pipe(
 	R.prop('newPath'),
-	R.converge(R.concat, [
-		getPathWithoutName,
-		getNewImgWithExt
-	]),
-	R.tap(console.log)
+	R.converge(R.concat, [getPathWithoutName, getNewImgWithExt])
 );
-
-const setNewPath = (x) =>
-	R.pipe(
-		R.set(R.lensProp('newPath'), getRenamedPath(x)),
-		R.tap(console.log)
-	)(x);
 
 const renameImage = R.pipe(
 	R.converge(fs.rename, [R.prop('newPath'), getRenamedPath])

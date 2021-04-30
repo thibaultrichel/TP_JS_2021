@@ -3,10 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const {getPredictions} = require('./modelPredictions.js');
-const {
-	renameImage,
-	getRenamedPath
-} = require('./rename.js');
+const {renameImage} = require('./rename.js');
 
 const ensureDir = (x) =>
 	R.pipe(
@@ -16,10 +13,7 @@ const ensureDir = (x) =>
 		R.andThen(R.always(x))
 	)(x);
 
-const getAbsolutePath = R.pipe(
-	R.prop('path'),
-	path.resolve
-);
+const getAbsolutePath = R.pipe(R.prop('path'), path.resolve);
 
 const getNewPath = (x) =>
 	R.pipe(
@@ -39,11 +33,7 @@ const moveFile = async (img) => {
 
 const sortImage = R.pipe(ensureDir, R.andThen(moveFile));
 
-const sortAndRename = R.pipe(
-	sortImage,
-	R.andThen(R.tap(console.log)),
-	R.andThen(renameImage)
-);
+const sortAndRename = R.pipe(sortImage, R.andThen(renameImage));
 
 const sortPredictionsInDirectories = R.pipe(
 	getPredictions,

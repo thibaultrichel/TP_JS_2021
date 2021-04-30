@@ -21,7 +21,7 @@
     "xo": "^0.38.2"
   },
   "xo": {
-    "space": 2,
+    "space": 4,
     "prettier": true,
     "rules": {
       "unicorn/no-fn-reference-in-iterator": 0,
@@ -33,10 +33,9 @@
     ]
   },
   "prettier": {
-    "printWidth": 60,
+    "useTabs": true,
     "bracketSpacing": false,
     "singleQuote": true,
-    "trailingComma": "none",
-    "useTabs": true
+    "trailingComma": "none"
   }
 }
