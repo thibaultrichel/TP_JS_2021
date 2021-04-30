@@ -1,6 +1,5 @@
-const tens = require('@tensorflow/tfjs-node');
-// Erreur xo car import non utilisé, mais ne marche pas sinon
-// et erreur xo si pas de nom assigné au require
+// eslint-disable-next-line import/no-unassigned-import
+require('@tensorflow/tfjs-node');
 const cocoSsd = require('@tensorflow-models/coco-ssd');
 const fs = require('fs-extra');
 const jpeg = require('jpeg-js');
