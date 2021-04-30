@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "code-style": "xo",
-    "start": "clear && node index.js",
+    "start": "clear && node index.js"
   },
   "dependencies": {
     "@tensorflow-models/coco-ssd": "^2.2.1",
@@ -20,7 +20,7 @@
     "xo": "^0.38.2"
   },
   "xo": {
-    "space": 4,
+    "space": 2,
     "prettier": true,
     "rules": {
       "unicorn/no-fn-reference-in-iterator": 0,
@@ -32,7 +32,6 @@
     ]
   },
   "prettier": {
-    "useTabs": true,
     "bracketSpacing": false,
     "singleQuote": true,
     "trailingComma": "none"
