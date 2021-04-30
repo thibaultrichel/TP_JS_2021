@@ -6,7 +6,6 @@
   "scripts": {
     "code-style": "xo",
     "start": "clear && node index.js",
-    "test": "clear && node testfile.js"
   },
   "dependencies": {
     "@tensorflow-models/coco-ssd": "^2.2.1",
